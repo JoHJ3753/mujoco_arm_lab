@@ -1,0 +1,7 @@
+mujoco==3.6.0
+numpy
+imageio
+matplotlib
+opencv-python
+imageio[ffmpeg]
+imageio[pyav]
