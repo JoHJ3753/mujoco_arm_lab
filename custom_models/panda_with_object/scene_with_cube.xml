@@ -1,0 +1,63 @@
+<mujoco model="panda_with_cube_scene">
+
+  <!--
+    Franka Panda 로봇팔 본체를 Menagerie의 panda.xml에서 가져온다.
+    이 파일은 /workspace/custom_models/panda_with_object/scene_with_cube.xml 기준으로
+    ../../mujoco_menagerie/franka_emika_panda/panda.xml 위치에 있다.
+  -->
+  <include file="../../mujoco_menagerie/franka_emika_panda/panda.xml"/>
+
+  <statistic center="0.3 0 0.4" extent="1.2"/>
+
+  <visual>
+    <headlight diffuse="0.6 0.6 0.6" ambient="0.3 0.3 0.3" specular="0 0 0"/>
+    <rgba haze="0.15 0.25 0.35 1"/>
+    <global azimuth="120" elevation="-20"/>
+  </visual>
+
+  <asset>
+    <texture type="skybox" builtin="gradient" rgb1="0.3 0.5 0.7" rgb2="0 0 0" width="512" height="3072"/>
+    <texture type="2d" name="groundplane" builtin="checker" mark="edge"
+             rgb1="0.2 0.3 0.4" rgb2="0.1 0.2 0.3"
+             markrgb="0.8 0.8 0.8" width="300" height="300"/>
+    <material name="groundplane" texture="groundplane" texuniform="true" texrepeat="5 5" reflectance="0.2"/>
+  </asset>
+
+  <worldbody>
+    <!-- 바닥 -->
+    <geom name="floor" size="0 0 0.05" type="plane" material="groundplane"/>
+
+    <!-- 조명 -->
+    <light name="top_light" pos="0 0 2.0" dir="0 0 -1" directional="true"/>
+
+    <!-- 고정 카메라 -->
+    <camera name="front_camera"
+            pos="1.2 -1.2 0.9"
+            xyaxes="0.707 0.707 0 -0.35 0.35 0.866"/>
+
+    <!--
+      실습용 큐브 물체
+      body pos는 물체 중심 위치다.
+      geom size="0.04 0.04 0.04"는 x/y/z 반쪽 길이이므로 실제 큐브 크기는 0.08m이다.
+    -->
+    <body name="target_cube" pos="0.5 0 0.04">
+      <freejoint name="target_cube_freejoint"/>
+      <geom name="target_cube_geom"
+            type="box"
+            size="0.04 0.04 0.04"
+            mass="0.1"
+            rgba="1 0.2 0.2 1"/>
+    </body>
+
+    <!-- 실습용 구체 물체 -->
+    <body name="target_sphere" pos="0.35 0.2 0.05">
+      <freejoint name="target_sphere_freejoint"/>
+      <geom name="target_sphere_geom"
+            type="sphere"
+            size="0.05"
+            mass="0.1"
+            rgba="0.2 0.4 1 1"/>
+    </body>
+  </worldbody>
+
+</mujoco>
